@@ -32,21 +32,13 @@ class Files{
 		oos.close();
 	}
 	
-	public Baking read(String bread) throws Exception {
+	public File[] read() throws Exception {
 		Baking ba = null;
 		File dit = new File("C:\\Users\\user\\Desktop\\클라우드\\test");
-		File ff = new File(dit, bread+".txt");
-		try {
-			FileInputStream fis = new FileInputStream(ff);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			ObjectInputStream ois = new ObjectInputStream(bis);
-			ba = (Baking)ois.readObject();
-			ois.close();
-		}catch (Exception e) {
-			return null;
-			}
-		return ba;
+		File[] ff = dit.listFiles();
+		//	File ff = new File(dit, bread+".txt");
 		
+		return ff;
 	}
 	
 	public  boolean create(String bread) throws Exception {
@@ -55,9 +47,6 @@ class Files{
 		if(ff.createNewFile()) { return false; }
 		return true;
 	}
-	
-	
-	
 }
 
 public class Quiz02 {
@@ -80,9 +69,6 @@ public class Quiz02 {
 		case 1:
 			System.out.println("등록할 빵 이름 : ");
 			bread = input.next();
-		//	if(ba.getBread().equals(bread)) {
-		//		
-		//	}
 			System.out.println("가격 등록 : ");
 			price = input.next();
 			ba.setBread(bread);
@@ -93,17 +79,36 @@ public class Quiz02 {
 			System.out.println("등록 완료");
 			break;
 		case 2:
-			int i=0;
-			out.read(bread);
-			if(out.read(bread) != null) {
-				for( i = 0; i<arr.size();i++) {
+			File[] fa = out.read();
+			if(fa.length == 0) {
+				System.out.println("빵 없음");
+			}
+			for(int i=0; i<fa.length;i++) {
+				File a = fa[i];
+				FileInputStream f1 = new FileInputStream(a);
+				BufferedInputStream f2 = new BufferedInputStream(f1);
+				ObjectInputStream f3 = new ObjectInputStream(f2);
+				Baking s = (Baking)f3.readObject();
+				System.out.println(s.getBread()+"-"+s.getPrice());
+			}	
+		//	int i=0;
+			
+		//	System.out.println("찾을 빵 : ");
+		//	bread = input.next();
+		//	out.read(bread);
+		//	if(out.read(bread) != null) {
+				/*for( i = 0; i<arr.size();i++) {
 					System.out.print(arr.get(i).getBread()+" - ");
 					System.out.println(arr.get(i).getPrice());
 					System.out.println("--------");
-				}
-			}else {
-				System.out.println("등록된 빵이 없습니다.");
-			}
+					
+				}*/
+			//	Baking a = out.read(bread);
+							
+		//		System.out.println(a.getBread());
+		//	}else {
+		//		System.out.println("등록된 빵이 없습니다.");
+		//	}
 			
 			/*	if(i != arr.size()){
 			for( i = 0; i<arr.size();i++) {
@@ -116,21 +121,11 @@ public class Quiz02 {
 			else {
 				System.out.println("등록된 빵이 없습니다.");
 			}*/
-			
 			break;
 		case 3:
 			System.out.println("종료합니다.");
 			return;
 		}
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 }
 }
